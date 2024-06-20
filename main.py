@@ -7,12 +7,12 @@ if __name__ == "__main__":
     
     if obs.is_connected():
         print("OBS WebSocketに接続しました")
-        capture_source = "source"  # ここでキャプチャソースを指定
+        capture_source = "画像"  # ここでキャプチャソースを指定
         team_scores = {}
 
         try:
             counter = 0
-            area = (844, 934, 930, 1000)
+            area = (844, 160, 900, 216)
             while True:
                 image_file_path = f"captured_image_{counter}.png"  # ファイル名にインデックスを含める
                 teams, scores = save_image_from_obs(obs.ws, image_file_path, capture_source, area)

@@ -7,7 +7,7 @@ from process_image import check_image_for_text
 import tempfile
 import time
 
-reader = easyocr.Reader(['en'])
+reader = easyocr.Reader(['en'], gpu=True)
 
 def save_image_from_obs(ws, image_file_path, capture_source, area=None):
 
@@ -33,16 +33,17 @@ def save_image_from_obs(ws, image_file_path, capture_source, area=None):
             img.save(image_file_path)
             if area:
                 img = img.crop(area)
-                with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
-                    cropped_image_path = tmp.name
-                    img.save(cropped_image_path)
+                with tempfile.NamedTemporaryFile(suffix=".png", delete=False):
+                    img.save("judg.png")
+                    print(f"画像を保存しました: {"judg.png"}")
                 success = True
 
     if success:
-        result = reader.readtext(cropped_image_path)
+        result = reader.readtext("judg.png")
+        print(result)
         results = [item[1] for item in result]
         results.append("0")
-        if results[0] == '12':
+        if results[0] == '2':
             return check_image_for_text(image_file_path)
         else:
             time.sleep(1)
